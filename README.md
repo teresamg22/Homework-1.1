@@ -118,5 +118,124 @@ En la rama master
 Tu rama está actualizada con 'origin/master'.
 
 ```
+## TEST OF MERGE BY PULL REQUEST WITHOUT CONFLICTS 
+
+One classmate has done a Fork of this repository and has added a line in file test1.txt. After he has asked for a pull request to merge both branches.
+First from our project repository we checkout a new branch and test the changes.
+```
+:~/Homework-1.1$ git pull
+Actualizando 2a667bc..c4fad6d
+Fast-forward
+ README.md | 120 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 120 insertions(+)
+
+~/Homework-1.1$ git checkout -b danielvicedo-master master
+Cambiado a nueva rama 'danielvicedo-master'
+
+~/Homework-1.1$ git pull https://github.com/danielvicedo/Homework-1.1.git
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0
+Desempaquetando objetos: 100% (3/3), listo.
+Desde https://github.com/danielvicedo/Homework-1.1
+ * branch            HEAD       -> FETCH_HEAD
+Actualizando c4fad6d..369f019
+Fast-forward
+ test1.txt | 3 +++
+ 1 file changed, 3 insertions(+)
+ 
+ ```
+ We can see that there isn't any conflict with the two branches. So we come back to master branch, merge them and we do a push to updated the repository.
+ 
+ ``` 
+~/Homework-1.1$ git checkout master
+Cambiado a rama 'master'
+Tu rama está actualizada con 'origin/master'.
+
+
+~/Homework-1.1$ git merge --no-ff danielvicedo-master
+Merge made by the 'recursive' strategy.
+ test1.txt | 3 +++
+ 1 file changed, 3 insertions(+)
+
+~/Homework-1.1$ git push origin master
+Username for 'https://github.com': teresamg22
+Password for 'https://teresamg22@github.com': 
+Contando objetos: 4, listo.
+Delta compression using up to 8 threads.
+Comprimiendo objetos: 100% (4/4), listo.
+Escribiendo objetos: 100% (4/4), 571 bytes | 571.00 KiB/s, listo.
+Total 4 (delta 0), reused 0 (delta 0)
+To https://github.com/teresamg22/Homework-1.1.git
+   c4fad6d..116984a  master -> master
+   
+```
+## TEST OF MERGE BY PULL REQUEST WITH CONFLICTS 
+
+In this case another classmate has done also changes in test1.txt and also has added another file pullrequest.txt.
+As in the previous case. we start doing checkout a new branch and test the changes.
 
 ```
+~/Homework-1.1$ git checkout -b adiaz92-master master
+Cambiado a nueva rama 'adiaz92-master'
+
+~/Homework-1.1$ git pull https://github.com/adiaz92/Homework-1.1.gitremote: 
+Enumerating objects: 6, done.
+remote: Counting objects: 100% (6/6), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 4 (delta 0), reused 4 (delta 0), pack-reused 0
+Desempaquetando objetos: 100% (4/4), listo.
+Desde https://github.com/adiaz92/Homework-1.1
+ * branch            HEAD       -> FETCH_HEAD
+Auto-fusionando test1.txt
+CONFLICTO (contenido): Conflicto de fusión en test1.txt
+Fusión automática falló; arregle los conflictos y luego realice un commit con el resultado.
+```
+In this case we can see that there is a conflict with the file test1.txt. If we open this file we can see where are the conflicts
+```
+~/Homework-1.1$ cat test1.txt
+Test 1.1
+Hello World!
+Text in branch testbranch
+Adding a tag
+
+<<<<<<< HEAD
+
+Trying to perform a pull-action
+=======
+Pull Request Prove by adiaz92
+
+Adding file pullrequest.txt
+>>>>>>> 901f9df8864e6d8384eef6991553ac982f01c456
+```
+What has been added by the user adiaz92 is what is below the ====== We modify the file erasing the line ==== and the lines with the <<<<<<<< and >>>>>>>. and we do a commit with the changes:
+```
+~/Homework-1.1$ git commit -m "modify test1.txt conflict"
+U	test1.txt
+error: No es posible realizar un commit porque tienes archivos sin fusionar.
+ayuda: Corrígelos en el árbol de trabajo y entonces usa 'git add/rm <archivo>',
+ayuda: como sea apropiado, para marcar la resolución y realizar un commit.
+fatal: Saliendo porque existe un conflicto sin resolver.
+
+~/Homework-1.1$ git add test1.txt
+~/Homework-1.1$ git commit -am "modify test1.txt conflict"
+[master 2a55daf] modify test1.txt conflict
+```
+And we make the merge of the branches as in the previous case:
+```
+~/Homework-1.1$ git merge -m "Merge branch adiaz92-master" adiaz92-master
+Ya está actualizado.
+teresa@teresa-Inspiron-5570:~/Homework-1.1$ git push origin master
+Username for 'https://github.com': teresamg22
+Password for 'https://teresamg22@github.com': 
+Contando objetos: 10, listo.
+Delta compression using up to 8 threads.
+Comprimiendo objetos: 100% (10/10), listo.
+Escribiendo objetos: 100% (10/10), 1.00 KiB | 1.00 MiB/s, listo.
+Total 10 (delta 5), reused 0 (delta 0)
+remote: Resolving deltas: 100% (5/5), completed with 1 local object.
+To https://github.com/teresamg22/Homework-1.1.git
+   a8fb5be..2a55daf  master -> master
+```
+
