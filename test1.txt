@@ -3,5 +3,11 @@ Hello World!
 Text in branch testbranch
 Adding a tag
 
+<<<<<<< HEAD
 
 Trying to perform a pull-action
+=======
+Pull Request Prove by adiaz92
+
+Adding file pullrequest.txt
+>>>>>>> 901f9df8864e6d8384eef6991553ac982f01c456
